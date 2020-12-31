@@ -3,29 +3,25 @@ name: Docker
 on:
   push:
     branches:
-      - main
+      - dev
 
   # Run tests for any PRs.
   pull_request:
-    
+
 env:
-  IMAGE_NAME: btburnett3/couchbasefakeit
+  IMAGE_NAME: facetdigital/couchbasefakeit
 
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
   test:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         couchbase-version:
-          - enterprise-5.5.2
-          - enterprise-6.0.3
           - enterprise-6.5.1
-          - community-6.5.1
           - enterprise-6.6.1
-          - community-7.0.0-beta
           - enterprise-7.0.0-beta
 
     steps:
@@ -47,26 +43,23 @@ jobs:
 
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-    
+
     strategy:
       matrix:
         couchbase-version:
-          - enterprise-5.5.2
-          - enterprise-6.0.3
           - enterprise-6.5.1
-          - community-6.5.1
           - enterprise-6.6.1
-          - community-7.0.0-beta
           - enterprise-7.0.0-beta
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout the repo
+        uses: actions/checkout@v2
 
       - name: Build image
         run: docker build . --file Dockerfile  --build-arg COUCHBASE_TAG=${{ matrix.couchbase-version }} --tag $IMAGE_NAME
 
       - name: Log into registry
-        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u btburnett3 --password-stdin
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u jgroh9 --password-stdin
 
       - name: Push image
         run: |
