@@ -2,7 +2,10 @@ version: "3.7"
 
 services:
   couchbase:
-    image: btburnett3/couchbasefakeit:enterprise-6.5.1
+    image: facetdigital/couchbasefakeit:enterprise-7.0.0-beta
+    # build:
+    #   context: ../.
+    container_name: cbfakeit
     environment:
       - CB_SERVICES=kv,n1ql,index,fts,eventing,cbas
     volumes:
