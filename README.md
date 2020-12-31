@@ -2,28 +2,28 @@
 
 ## Overview
 
-couchbasefakeit is a Docker image designed for testing and local development.  It starts up a single, standalone [Couchbase Server](http://couchbase.com) instance within a Docker container and initializes it with buckets, indexes, and fake data that you define.  Fake data is generated using [FakeIt](https://www.npmjs.com/package/fakeit).
+couchbasefakeit is a Docker image designed for testing and local development. It starts up a single, standalone [Couchbase Server](http://couchbase.com) instance within a Docker container and initializes it with buckets, indexes, and fake data that you define. Fake data is generated using [FakeIt](https://www.npmjs.com/package/fakeit).
 
-This can be very useful in reducing developer friction, providing a way to quickly and easily spin up a Couchbase server preinitialized for your application.  By including an Dockerfile and associated configuration files within your source control repo, you can version your development data definitions along with your application.
+This can be very useful in reducing developer friction, providing a way to quickly and easily spin up a Couchbase server preinitialized for your application. By including an Dockerfile and associated configuration files within your source control repo, you can version your development data definitions along with your application.
 
 ## Pulling
 
 The latest version can be pulled using:
 
 ```sh
-docker pull btburnett3/couchbasefakeit:latest
+docker pull facetdigital/couchbasefakeit:latest
 ```
 
 The `latest` tag will be the latest Enterprise edition of Couchbase, with the latest release of FakeIt.
 
-Specific versions may also be available, such as `enterprise-4.6.3`.  This would be the Enterprise edition of Couchbase, version 4.6.3.
+Specific versions may also be available, such as `enterprise-6.6.1`. This would be the Enterprise edition of Couchbase, version 6.6.1.
 
 ## Using couchbasefakeit
 
-To use couchbasefakeit, create your own Dockerfile that uses couchbasefakeit as its base image.  Then add configuration files to the /startup directory of the new image.  You may also override environment variables to change the Couchbase Server configuration.
+To use couchbasefakeit, create your own Dockerfile that uses couchbasefakeit as its base image. Then add configuration files to the /startup directory of the new image. You may also override environment variables to change the Couchbase Server configuration.
 
 ```dockerfile
-FROM btburnett3/couchbasefakeit:latest
+FROM facetdigital/couchbasefakeit:latest
 
 # Customize environment
 ENV CB_DATARAM=256 \
@@ -37,18 +37,18 @@ COPY . /startup/
 
 The following environment variables can be set to change the Couchbase Server configuration:
 
-| Env Variable    | Description                                                                                |
-| ------------    | -----------                                                                                |
-| CB_CLUSTER_NAME | Specify the name of the cluster                                                            |
-| CB_DATARAM      | Data service RAM in megabytes, default `512`                                               |
-| CB_INDEXRAM     | Index service RAM in megabytes, default `256`                                              |
-| CB_SEARCHRAM    | Search (FTS) service RAM in megabytes, default `256`                                       |
-| CB_ANALYTICSRAM | Analytics service RAM in megabytes. Only applicable if `cbas` is added to `CB_SERVICES`    |
-| CB_EVENTINGRAM  | Eventing service RAM in megabytes. Only applicable if `eventing` is added to `CB_SERVICES` |
-| CB_SERVICES     | Services to enable, default `kv,n1ql,index,fts`                                            |
-| CB_INDEXSTORAGE | Index storage mode, `forestdb` (default) or `memory_optimized`                             |
-| CB_USERNAME     | Couchbase user name, default `Administrator`                                               |
-| CB_PASSWORD     | Couchbase password, default `password`                                                     |
+| Env Variable    | Description                                                                                                |
+| ------------    | -----------                                                                                                |
+| CB_CLUSTER_NAME | Specify the name of the cluster                                                                            |
+| CB_DATARAM      | Data service RAM in megabytes, default `1024`                                                              |
+| CB_INDEXRAM     | Index service RAM in megabytes, default `1024`                                                             |
+| CB_SEARCHRAM    | Search (FTS) service RAM in megabytes, default `1024`                                                      |
+| CB_ANALYTICSRAM | Analytics service RAM in megabytes, default `1024`. Only applicable if `cbas` is added to `CB_SERVICES`    |
+| CB_EVENTINGRAM  | Eventing service RAM in megabytes, default `1024`. Only applicable if `eventing` is added to `CB_SERVICES` |
+| CB_SERVICES     | Services to enable, default `kv,n1ql,index,fts`                                                            |
+| CB_INDEXSTORAGE | Index storage mode, `forestdb` or `memory_optimized` (default)                                             |
+| CB_USERNAME     | Couchbase user name, default `Administrator`                                                               |
+| CB_PASSWORD     | Couchbase password, default `password`                                                                     |
 
 Values for CB_SERVICES and CB_INDEXSTORAGE correspond to parameters for the [Couchbase REST API](https://docs.couchbase.com/server/current/rest-api/rest-node-provisioning.html).
 
@@ -56,7 +56,7 @@ Values for CB_SERVICES and CB_INDEXSTORAGE correspond to parameters for the [Cou
 
 ### Bucket Configuration
 
-To configure your buckets, simply place a `buckets.json` file in the `/startup` directory of your image.  This file should contain an array of bucket definition objects.
+To configure your buckets, simply place a `buckets.json` file in the `/startup` directory of your image. This file should contain an array of bucket definition objects.
 
 ```json
 [
@@ -154,7 +154,7 @@ The values to replace are `your_scope_name` and the values in the `collections` 
 
 ### Generating Data With FakeIt
 
-To generate data with FakeIt, create a directory underneath `/startup` with the name of your bucket, and directory beneath that named `models`.  For example, `/startup/sample/models`.  Note that the names are case sensitive.  Add your FakeIt YAML models to the models directory.
+To generate data with FakeIt, create a directory underneath `/startup` with the name of your bucket, and directory beneath that named `models`. For example, `/startup/sample/models`. Note that the names are case sensitive. Add your FakeIt YAML models to the models directory.
 
 FakeIt will be run using these models automatically during startup.
 You may also include inputs, such as CSV files, in the image to be referenced by the models.
@@ -187,7 +187,7 @@ For example, we have configured the `models` directory under `example/sample/mod
 
 ### Creating Views
 
-To create views, add a directory underneath `/startup` with the name of your bucket and a text file named `views.json`.  This file should be a JSON object with one or more design document specifications.  The name of each attribute should be the name of the design document.
+To create views, add a directory underneath `/startup` with the name of your bucket and a text file named `views.json`. This file should be a JSON object with one or more design document specifications. The name of each attribute should be the name of the design document.
 
 ```json
 {
@@ -201,13 +201,13 @@ To create views, add a directory underneath `/startup` with the name of your buc
 }
 ```
 
-Examples of the syntax for design documents can be found [in the Couchbase documentation](https://developer.couchbase.com/documentation/server/current/rest-api/rest-ddocs-create.html).  Note that `views.json` has an extra nesting level above the Couchbase examples, as it supports more than one design document in a single file.
+Examples of the syntax for design documents can be found [in the Couchbase documentation](https://developer.couchbase.com/documentation/server/current/rest-api/rest-ddocs-create.html). Note that `views.json` has an extra nesting level above the Couchbase examples, as it supports more than one design document in a single file.
 
 ### Creating Indexes
 
-To create indexes, add a directory underneath `/startup` with the name of your bucket and a text file named `indexes.n1ql`.  For example, `/startup/default/indexes.n1ql`.  Note that the names are case sensitive.
+To create indexes, add a directory underneath `/startup` with the name of your bucket and a text file named `indexes.n1ql`. For example, `/startup/default/indexes.n1ql`. Note that the names are case sensitive.
 
-Within this file, you can define the `CREATE INDEX` statements for your bucket, separated by semicolons.  It is recommended for performance to use `WITH {"defer_build": true}` for all indexes, and use a `BUILD INDEX` statement at the end of the file.
+Within this file, you can define the `CREATE INDEX` statements for your bucket, separated by semicolons. It is recommended for performance to use `WITH {"defer_build": true}` for all indexes, and use a `BUILD INDEX` statement at the end of the file.
 
 ```sql
 CREATE PRIMARY INDEX `#primary` ON default WITH {"defer_build": true};
@@ -217,11 +217,11 @@ BUILD INDEX ON default (`#primary`, `Types`);
 
 ### Creating Indexes with YAML
 
-Alternatively, you may add YAML files with index definitions under the `/startup/<bucketname>/indexes` folder.  This operation uses [couchbase-index-manager](https://www.npmjs.com/package/couchbase-index-manager) to create the indexes.  [See here](https://www.npmjs.com/package/couchbase-index-manager#definition-files) for an explanation of the YAML file format.
+Alternatively, you may add YAML files with index definitions under the `/startup/<bucketname>/indexes` folder. This operation uses [couchbase-index-manager](https://www.npmjs.com/package/couchbase-index-manager) to create the indexes. [See here](https://www.npmjs.com/package/couchbase-index-manager#definition-files) for an explanation of the YAML file format.
 
 ### Analytics Dataset Setup
 
-To setup the analytics service datasets, add a directory under the `/startup/<bucketname>/analytics` folder. Within this folder create a text file named `dataset.json`. For example, `/startup/default/analytics/dataset.json`.  Note that the names are case sensitive.
+To setup the analytics service datasets, add a directory under the `/startup/<bucketname>/analytics` folder. Within this folder create a text file named `dataset.json`. For example, `/startup/default/analytics/dataset.json`. Note that the names are case sensitive.
 
 Within this file, create a key called `statements` with an array as the value. Within the array you can define your `CREATE DATAVERSE` and `CREATE DATASET` statements for your bucket, separated by semicolons. Below is an example showing what the `dataset.json` structure should look like. **IMPORTANT** Make sure to append the proper `USE` statement to each `CREATE DATASET` statement so that it's placed in the proper DATAVERSE. Additionaly, always end your file with a `CONNECT LINK Local;` statement.
 
@@ -237,7 +237,7 @@ Within this file, create a key called `statements` with an array as the value. W
 
 ### Creating Analytics Indexes
 
-To create analytics indexes, add a directory under the `/startup/<bucketname>/analytics` folder.  Within this folder create a text file named `indexes.json`. For example, `/startup/default/analytics/indexes.json`.  Note that the names are case sensitive.
+To create analytics indexes, add a directory under the `/startup/<bucketname>/analytics` folder. Within this folder create a text file named `indexes.json`. For example, `/startup/default/analytics/indexes.json`. Note that the names are case sensitive.
 
 Within this file, create a key called `statements` with an array as the value. Within the array you can define your `CREATE INDEX` statements for your DATASET, separated by semicolons. **IMPORTANT** Make sure your queries always start with a `USE` statment otherwise the query engine will have no idea which DATAVERSE to associate the index with.
 
@@ -251,11 +251,11 @@ Within this file, create a key called `statements` with an array as the value. W
 
 ### Creating Full Text Search Indexes
 
-To create FTS indexes, add a directory underneath `/startup` with the name of your bucket, and underneath that a `fts` directory.  Within that, add a json file for each index, with the file name being the index name.  For example, `/startup/default/fts/my_index.json`.  Note that names are case sensitive.
+To create FTS indexes, add a directory underneath `/startup` with the name of your bucket, and underneath that a `fts` directory. Within that, add a json file for each index, with the file name being the index name. For example, `/startup/default/fts/my_index.json`. Note that names are case sensitive.
 
-Within this file, place the JSON index definition.  This can be easily exported from the Couchbase Console.
+Within this file, place the JSON index definition. This can be easily exported from the Couchbase Console.
 
-To create FTS index aliases, add an additional file in the same folder named `aliases.json`.  This file should be an object with each attribute being an alias name, and the value being an array of index names.
+To create FTS index aliases, add an additional file in the same folder named `aliases.json`. This file should be an object with each attribute being an alias name, and the value being an array of index names.
 
 ```json
 {
@@ -340,14 +340,3 @@ To shut down and cleanup:
 1. `docker-compose down`
 
 For more detailed examples of FakeIt models, see [https://github.com/bentonam/fakeit/tree/dev/test/fixtures/models](https://github.com/bentonam/fakeit/tree/dev/test/fixtures/models).
-
-### Note on Community Edition
-
-If you are using the Couchbase Server Community images, then note that configuration of enterprise features may cause your settings/configuration to fail.
-
-For example:
-
-- Couchbase Server Community does not have Eventing. Therefore any json configuration files in the `events` folder may be ignored or may cause your configuration to fail.
-- Couchbase Server Community does not support `memory_optimized` index storage. Setting CB_INDEXSTORAGE to `memory_optimized` may be ignored or may cause your configuration to fail.
-
-For more information: read about the [differences between Community and Enterprise editions](https://www.couchbase.com/products/editions)
