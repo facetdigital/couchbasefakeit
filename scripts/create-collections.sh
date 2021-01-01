@@ -1,7 +1,7 @@
 #!/bin/bash
 
 bucketName=$1
-
+echo "About to create scopes and collections in bucket $bucketName..."
 if [ -e "/startup/$bucketName/collections.json" ]; then
   echo "Creating scopes and collections in $bucketName..."
 

@@ -22,6 +22,7 @@ if [[ $CB_VERSION > "7." ]]; then
   echo "About to create scopes and collections..."
 
   scriptPath=$(dirname $(realpath $0))
+  echo "scriptPath: ${scriptPath}"
   # Scopes and collections need created after a bucket is up and running
   while read bucketName
   do
