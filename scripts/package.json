@@ -4,7 +4,7 @@
   "description": "scripts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/brantburnett/couchbasefakeit"
+    "url": "https://github.com/facetdigital/couchbasefakeit"
   },
   "main": "is-the-bucket-ready.js",
   "author": "",
@@ -12,6 +12,7 @@
   "dependencies": {
     "couchbase": "3.1.0",
     "couchbase-index-manager": "1.0.0-beta1",
-    "fakeit-facet": "2.0.3"
+    "fakeit-facet": "2.0.3",
+    "scrypt": "6.0.3"
   }
 }
