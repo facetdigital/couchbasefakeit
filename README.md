@@ -31,6 +31,51 @@ ENV CB_DATARAM=256 \
 
 # Copy files
 COPY . /startup/
+
+# Create a new directory to hold the status of the node, i.e. initialized or not.
+RUN mkdir /nodestatus
+VOLUME /nodestatus
+```
+
+Alternatively, if you use docker-compose you would set it up like below:
+
+```yaml
+version: "3.7"
+
+services:
+  couchbase:
+    image: facetdigital/couchbasefakeit:enterprise-7.0.0-beta
+    environment:
+      - CB_CLUSTER_NAME=my_cluster
+      - CB_SERVICES=kv,n1ql,index,fts,eventing,cbas
+      - CB_DATARAM=1024
+      - CB_INDEXRAM=1024
+      - CB_SEARCHRAM=1024
+      - CB_ANALYTICSRAM=1024
+      - CB_EVENTINGRAM=512
+      - CB_INDEXSTORAGE=memory_optimized
+    ports:
+      - "8091-8096:8091-8096"
+      - "11207:11207"
+      - "11210-11211:11210-11211"
+    expose:
+      - "8091-8096"
+    volumes:
+      - startup:/startup
+      - initStatus:/nodestatus
+      - couchbase:/opt/couchbase/var
+
+volumes:
+  couchbase:
+    name: couchbase
+  startup:
+    name: couchbase-startup
+    driver_opts:
+      type: none
+      device: ./startup
+      o: bind
+  initStatus:
+    name: initStatus
 ```
 
 ### Environment Variables
