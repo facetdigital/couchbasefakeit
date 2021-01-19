@@ -30,7 +30,4 @@ ENV CB_DATARAM=1024 CB_INDEXRAM=1024 CB_SEARCHRAM=1024 CB_ANALYTICSRAM=1024 CB_E
 	CB_SERVICES=kv,n1ql,index,fts CB_INDEXSTORAGE=memory_optimized \
 	CB_USERNAME=Administrator CB_PASSWORD=password
 
-RUN mkdir /nodestatus
-VOLUME /nodestatus
-
 ENTRYPOINT ["./configure-node.sh"]
