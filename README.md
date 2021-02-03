@@ -40,7 +40,7 @@ VOLUME /nodestatus
 Alternatively, if you use docker-compose you would set it up like below:
 
 ```yaml
-version: "3.7"
+version: "3.9"
 
 services:
   couchbase:
