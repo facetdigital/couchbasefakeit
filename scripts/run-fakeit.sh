@@ -1,5 +1,7 @@
 #!/bin/bash
 
+exec 3>&1 4>&2
+
 # Run fakeit
 while read bucketName
 do
@@ -14,9 +16,9 @@ do
       # If the bucket isn't initialized fakeit will error
       if node /scripts/is-the-bucket-ready.js $bucketName $CB_USERNAME $CB_PASSWORD $CB_VERSION; then
         if [[ $CB_VERSION < "5." ]]; then
-          /scripts/node_modules/.bin/fakeit couchbase \
+          /scripts/node_modules/.bin/fakeit couchbase -v \
             --bucket "$bucketName" \
-            "/startup/$bucketName/models"
+            "/startup/$bucketName/models" >&3
         elif [[ $CB_VERSION > "7." ]]; then
           # to ensure the scopes and collections that were just created
           # in prior steps, pause for a few seconds before continuing
@@ -61,10 +63,10 @@ do
               # to run fakeit for the scope and collection being processed
               if [ "$pathAlreadyProcessed" == false ] && [ "$runFakeit" == true ]; then
                 echo "About to run fakeit..."
-                /scripts/node_modules/.bin/fakeit couchbase \
+                /scripts/node_modules/.bin/fakeit couchbase -v \
                   -b "$bucketName" -u "$CB_USERNAME" -p "$CB_PASSWORD" \
                   --scopeName "$scopeName" --collectionName="$collectionName" \
-                  $modelsPath
+                  $modelsPath >&3
 
                 # Add the model path to an array so that we only process each folder once
                 processedPaths+=("$modelsPath")
@@ -77,15 +79,15 @@ do
           yamlFiles=$(find /startup/$bucketName/models -type f -name "*.yaml")
           if [[ ( -n yamlFiles ) ]]; then
             echo "About to run fakeit..."
-            /scripts/node_modules/.bin/fakeit couchbase \
+            /scripts/node_modules/.bin/fakeit couchbase -v \
               -b "$bucketName" -u "$CB_USERNAME" -p "$CB_PASSWORD" \
               --scopeName "_default" --collectionName="_default" \
-              "/startup/$bucketName/models/*.yaml"
+              "/startup/$bucketName/models/*.yaml" >&3
           fi
         else
-          /scripts/node_modules/.bin/fakeit couchbase \
+          /scripts/node_modules/.bin/fakeit couchbase -v \
             --bucket "$bucketName" -u "$CB_USERNAME" -p "$CB_PASSWORD" \
-            "/startup/$bucketName/models"
+            "/startup/$bucketName/models" >&3
         fi
         break
       else

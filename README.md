@@ -260,9 +260,9 @@ CREATE INDEX `Types` ON default (`type`) WITH {"defer_build": true};
 BUILD INDEX ON default (`#primary`, `Types`);
 ```
 
-### Creating Indexes with YAML
+### Creating Indexes with YAML or JSON
 
-Alternatively, you may add YAML files with index definitions under the `/startup/<bucketname>/indexes` folder. This operation uses [couchbase-index-manager](https://www.npmjs.com/package/couchbase-index-manager) to create the indexes. [See here](https://www.npmjs.com/package/couchbase-index-manager#definition-files) for an explanation of the YAML file format.
+Alternatively, you may add YAML or JSON files with index definitions under the `/startup/<bucketname>/indexes` folder. This operation uses [couchbase-index-manager](https://www.npmjs.com/package/couchbase-index-manager) to create the indexes. [See here](https://www.npmjs.com/package/couchbase-index-manager#definition-files) for an explanation of the file format needed when using YAML or JSON files.
 
 ### Analytics Dataset Setup
 
