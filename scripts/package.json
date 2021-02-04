@@ -12,6 +12,6 @@
   "dependencies": {
     "couchbase": "3.1.1",
     "couchbase-index-manager": "1.0.0",
-    "fakeit-facet": "2.0.4"
+    "fakeit-facet": "2.0.5"
   }
 }
