@@ -26,13 +26,13 @@ try {
   var bucket = cluster.bucket(bucketName);
   bucket.ping().then((pingResult) => {
     console.log(`Successfully pinged bucket: ${bucketName}`);
-    console.log(`Version: ${pingResult.version}`)
+    console.log(`Version: ${pingResult.version}`);
     process.exit(0);
   }).catch((error) => {
     console.error(`Ping to bucket ${bucketName} failed with the following error:`);
     console.error(error);
     process.exit(1);
-  })
+  });
 } catch (e) {
   console.log(e);
   process.exit(1);
