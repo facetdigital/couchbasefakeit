@@ -1,8 +1,9 @@
 name: Countries
 type: object
+collection: collection_1
 key: _id
 data:
-  inputs: ../../input/countries.csv
+  inputs: ../input/countries.csv
   pre_run: |
     this.data.count = inputs.countries.length;
 properties:
