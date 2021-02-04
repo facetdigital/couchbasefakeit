@@ -22,4 +22,8 @@ if [ -e "/startup/$bucketName/collections.json" ]; then
       curl -Ss -X POST -u "$CB_USERNAME:$CB_PASSWORD" http://localhost:8091/pools/default/buckets/$bucketName/collections/$scopeName -d name=$collectionName && echo
     done < <(cat /startup/$bucketName/collections.json | jq -r ".scopes.$scopeName | .collections | .[]")
   done < <(cat /startup/$bucketName/collections.json | jq -r '.scopes | keys[]')
+
+  # Sleep for a few seconds before moving on to give Couchbase time
+  # to make sure the scopes and collections exist
+  sleep 5
 fi
