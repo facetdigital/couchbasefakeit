@@ -1,7 +1,7 @@
 name: Users
 type: object
-scope: my_scope
-collection: users
+# scope: my_scope
+# collection: users
 key: id
 data:
   min: 5

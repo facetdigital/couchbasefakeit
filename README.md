@@ -363,6 +363,20 @@ To run the example locally:
 1. Ensure that Couchbase Server is not currently running on your machine to avoid port conflicts
 2. `git clone https://github.com/brantburnett/couchbasefakeit.git`
 3. `cd couchbasefakeit/example`
+    - **NOTE:** if you are targeting Couchbase Server 7+, you'll want to perform the following steps before moving to step 4.
+    - Open up the `example/sample/models/countries.yaml` file and uncomment the following line:
+
+      ```yaml
+      # collection: collection_1
+      ```
+
+    - Open up the `example/sample/models/users.yaml` file and uncomment the following lines:
+
+      ```yaml
+      # scope: my_scope
+      # collection: users
+      ```
+
 4. `docker-compose up -d`
 5. The server will be accessible at [http://localhost:8091](http://localhost:8091) after 15-30 seconds. The username is "Administrator", password is "password".
 

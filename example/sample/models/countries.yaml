@@ -1,6 +1,6 @@
 name: Countries
 type: object
-collection: collection_1
+# collection: collection_1
 key: _id
 data:
   inputs: ../input/countries.csv

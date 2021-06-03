@@ -22,6 +22,7 @@ jobs:
         couchbase-version:
           - enterprise-6.5.1
           - enterprise-6.6.1
+          - enterprise-6.6.2
           - enterprise-7.0.0-beta
 
     steps:
@@ -49,6 +50,7 @@ jobs:
         couchbase-version:
           - enterprise-6.5.1
           - enterprise-6.6.1
+          - enterprise-6.6.2
           - enterprise-7.0.0-beta
 
     steps:

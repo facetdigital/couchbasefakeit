@@ -35,6 +35,14 @@ do
   sleep 1
 done
 
-curl -Ss http://127.0.0.1:8091/node/controller/setupServices -d services=${CB_SERVICES//,/%2C} && echo
-curl -Ss http://127.0.0.1:8091/settings/indexes -d storageMode=$CB_INDEXSTORAGE && echo
-curl -Ss http://127.0.0.1:8091/settings/web -d port=8091 -d "username=$CB_USERNAME" -d "password=$CB_PASSWORD" && echo
+echo "Setting up the following services: $CB_SERVICES"
+echo
+curl -v -Ss http://127.0.0.1:8091/node/controller/setupServices -d "services=${CB_SERVICES//,/%2C}" && echo
+
+echo "Setting the index service storage mode..."
+echo
+curl -v -Ss http://127.0.0.1:8091/settings/indexes -d "storageMode=$CB_INDEXSTORAGE" && echo
+
+echo "Setting up the Administrator username and password..."
+echo
+curl -v -Ss http://127.0.0.1:8091/settings/web -d "port=8091" -d "username=$CB_USERNAME" -d "password=$CB_PASSWORD" && echo
